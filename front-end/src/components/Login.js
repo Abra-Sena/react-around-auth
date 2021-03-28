@@ -10,7 +10,7 @@ function Login(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log("username" + email, "password" + password);
+    console.log("username: " + email, "password: " + password);
     props.handleLogin(email, password);
     if(localStorage.getItem('jwt')) {
       history.push('/');
@@ -26,7 +26,6 @@ function Login(props) {
         name="login"
         onSubmit={handleSubmit}
         className="login__form"
-        noValidate
       >
         <h2 className="title">Log in</h2>
         <fieldset className="form__field">

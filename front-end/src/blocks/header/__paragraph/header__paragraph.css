@@ -1,20 +1,17 @@
 .header__paragraph {
-  position: absolute;
-  width: 141px;
-  height: 22px;
+  margin-right: 24px;
+  padding: 0;
 
   font-family: 'Inter', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
-  /* identical to box height, or 122% */
-  text-align: right;
 
   color: #FFFFFF;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 425px) {
   .header__paragraph {
     display: none;
   }

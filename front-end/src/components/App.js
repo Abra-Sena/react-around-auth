@@ -43,11 +43,13 @@ function App() {
       .then((res) => {
         if(res.err || !res) {
           setIsSuccess(false);
-          // set state for result popup here: setIsResultPopup(true);
+          // set state for result popup here
+          setInfoTooltip(true);
         }
 
         setIsSuccess(true);
-        // set state for result popup here: setIsResultPopup(true);
+        // set state for result popup here
+        setInfoTooltip(true);
         history.push('/');
       })
       .catch(err => console.log(err));
@@ -56,17 +58,23 @@ function App() {
   function handleLogin(email, password) {
     auth.authorize(email, password)
     .then((data) => {
-      if (!data || data.err) {
+      if (!data) {
         console.log(data.error);
         setIsSuccess(false);
-        // set state for result popup here: setIsResultPopup(true);
+        // set state for result popup here
+        setInfoTooltip(true);
       }
+
       if(data.token) {
         setPassword('');
         setIsLoggedIn(true);
-        history.push('/')
+        history.push('/');
+
         return;
       }
+
+      setEmail(email);
+      history.push('/');
     })
     .catch(err => console.log(err));
   }
@@ -75,8 +83,12 @@ function App() {
     localStorage.removeItem('jwt');
     setIsLoggedIn(false);
     setEmail('');
-    history.push('signin');
+    history.push('/signin');
   }
+
+  // function toggleToolTip() {
+  //   setInfoTooltip(true);
+  // }
 
   //handle click on buttons
   function handleEditAvatarBtn() {
