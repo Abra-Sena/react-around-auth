@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './Header';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -9,6 +10,8 @@ function Main(props) {
 
   return(
     <main className="content">
+      <Header email={props.isLoggedIn ? props.email : ""} link={'/'} linkText={props.isLoggedIn ? "Log out" : ""} onClick={props.handleSignOut} />
+
       <section className="profile">
         <div className="profile__avatar">
           <img src={currentUser.avatar} alt="profile-pic" className="profile__photo" />

@@ -10,7 +10,7 @@ function Login(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log("username: " + email, "password: " + password);
+    // console.log("username: " + email, "password: " + password);
     props.handleLogin(email, password);
     if(localStorage.getItem('jwt')) {
       history.push('/');
@@ -35,7 +35,7 @@ function Login(props) {
           <span id="password-error" className="form__field form__field_error"></span>
         </fieldset>
 
-        <button type="submit" aria-label="user-login" className="button">Log in</button>
+        <button type="submit" aria-label="user-login" className="button" >Log in</button>
         <Link to='/signup' className="link">Not a member yet? Sign up here!</Link>
       </form>
     </div>

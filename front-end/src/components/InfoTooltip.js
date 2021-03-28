@@ -5,8 +5,8 @@ import authFailure from '../images/auth-failure.svg';
 function InfoTooltip(props) {
   return (
     <div className={`popup popup_type_auth-result ${props.isOpen ? "popup_open" : ""}`} onClick={props.onClose}>
+      <button type="button" aria-label="close-auth-result" className="form__close-tool" onClick={props.onClose}></button>
       <div className="popup__content">
-        <button type="button" aria-label="close-auth-result" className="popup__close form__close-button" onClick={props.onClose}></button>
         <img
           className="popup__image_auth-result"
           src={props.isSuccess ? authSuccess : authFailure}

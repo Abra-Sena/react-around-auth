@@ -59,20 +59,21 @@ function App() {
     auth.authorize(email, password)
     .then((data) => {
       if (!data) {
-        console.log(data.error);
         setIsSuccess(false);
-        // set state for result popup here
-        setInfoTooltip(true);
+        toggleToolTip();
       }
 
       if(data.token) {
+        toggleToolTip()
         setPassword('');
         setIsLoggedIn(true);
+        setIsSuccess(true);
         history.push('/');
 
         return;
       }
 
+      toggleToolTip();
       setEmail(email);
       history.push('/');
     })
@@ -86,9 +87,9 @@ function App() {
     history.push('/signin');
   }
 
-  // function toggleToolTip() {
-  //   setInfoTooltip(true);
-  // }
+  function toggleToolTip() {
+    setInfoTooltip(!isInfoTooltip);
+  }
 
   //handle click on buttons
   function handleEditAvatarBtn() {
@@ -197,8 +198,10 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
+    // history.push('/');
   }, [history]);
 
+  //collect user's informations
   React.useEffect(() => {
     api.getUserInfo()
       .then((res) => {
@@ -220,17 +223,13 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <BrowserRouter>
         <Switch>
-          {/* <Route path='*'>
-            <Redirect to='./signup' />
-          </Route> */}
-
           <Route path='/signup'>
-            <Header email={email} link={'/signin'} linkText={"Log in"} />
+            <Header email={isLoggedIn ? email : ""} link={'/signin'} linkText={"Log in"} />
             <Register email={email} password={password} handleRegister={handleRegister} />
           </Route>
 
           <Route path='/signin'>
-            <Header email={email} link={'/signup'} linkText={"Sign up"} />
+            <Header email={isLoggedIn ? email : ""} link={'/signup'} linkText={"Sign up"} />
             <Login email={email} password={password} handleLogin={handleLogin} />
           </Route>
 
@@ -239,6 +238,7 @@ function App() {
             email={email}
             cards={cards}
             component={Main}
+            toggleToolTip={toggleToolTip}
             handleSignOut={handleSignOut}
             handleEditAvatarBtn={handleEditAvatarBtn}
             handleEditProfileBtn={handleEditProfileBtn}
@@ -255,7 +255,7 @@ function App() {
 
       <Footer />
 
-      <InfoTooltip isSuccess={isSuccess} onClose={handlePopupClose} isOpen={isInfoTooltip}/>
+      <InfoTooltip isSuccess={isSuccess} isOpen={isInfoTooltip} onClose={handlePopupClose} />
 
       {/* Edit avatar popup */}
       <EditAvatarPopup isOpen={isEditAvatar} onClose={handlePopupClose} onUpdateAvatar={handleEditAvatar} />

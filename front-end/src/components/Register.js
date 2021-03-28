@@ -1,7 +1,7 @@
 import  React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-function Register({props}) {
+function Register(props) {
   const [ email, setEmail ] = React.useState('');
   const [ password, setPassword ] = React.useState('');
 
@@ -35,7 +35,7 @@ function Register({props}) {
           <input id="password" type="password" name="password" className="login__input form__input_type_password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
           <span id="password-error" className="form__field form__field_error"></span>
         </fieldset>
-        <button type="submit" aria-label="user-login" className="button">Sign up</button>
+        <button type="submit" aria-label="user-login" className="button" onClick={props.toggleToolTip}>Sign up</button>
         <Link to='/signin' className="link">Already a member? Log in here!</Link>
       </form>
     </div>
