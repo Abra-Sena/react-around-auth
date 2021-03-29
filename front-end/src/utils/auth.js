@@ -36,14 +36,12 @@ export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     }
   })
   .then((res) => res.ok ? res.json() : Promise.reject('Error!' + res.statusText))
-  .then((data) => {
-    return data;
-  })
+  .then((data) => data)
   .catch((err) => console.log(err))
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, useHistory} from 'react-router-dom'
+import { Route, Switch, useHistory} from 'react-router-dom'
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -11,10 +11,11 @@ import AddPlacePopup from './AddNewCardPopup';
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import ImagePopup from './ImagePopup';
+import InfoTooltip from './InfoTooltip';
 import api from "../utils/api";
 import * as auth from "../utils/auth";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import InfoTooltip from './InfoTooltip';
+
 
 function App() {
   // current user context
@@ -56,6 +57,8 @@ function App() {
   }
   //Login
   function handleLogin(email, password) {
+    if(!email || !password) return;
+
     auth.authorize(email, password)
     .then((data) => {
       if (!data) {
@@ -66,16 +69,10 @@ function App() {
       if(data.token) {
         toggleToolTip()
         setPassword('');
-        setIsLoggedIn(true);
         setIsSuccess(true);
+        setIsLoggedIn(true);
         history.push('/');
-
-        return;
       }
-
-      toggleToolTip();
-      setEmail(email);
-      history.push('/');
     })
     .catch(err => console.log(err));
   }
@@ -191,14 +188,15 @@ function App() {
             console.log(res.err);
           }
 
-          setEmail(res.data.email);
-          setIsLoggedIn(true);
-          setIsSuccess(true);
-          history.push('/');
+          if(res) {
+            setEmail(res.data.email);
+            setIsLoggedIn(true);
+            setIsSuccess(true);
+            history.push('/');
+          }
         })
         .catch((err) => console.log(err));
     }
-    // history.push('/');
   }, [history]);
 
   //collect user's informations
@@ -221,37 +219,35 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <BrowserRouter>
-        <Switch>
-          <Route path='/signup'>
-            <Header email={isLoggedIn ? email : ""} link={'/signin'} linkText={"Log in"} />
-            <Register email={email} password={password} handleRegister={handleRegister} />
-          </Route>
+      <Switch>
+        <Route path='/signup'>
+          <Header email={isLoggedIn ? email : ""} link={'/signin'} linkText={"Log in"} />
+          <Register email={email} password={password} handleRegister={handleRegister} />
+        </Route>
 
-          <Route path='/signin'>
-            <Header email={isLoggedIn ? email : ""} link={'/signup'} linkText={"Sign up"} />
-            <Login email={email} password={password} handleLogin={handleLogin} />
-          </Route>
+        <Route path='/signin'>
+          <Header email={isLoggedIn ? email : ""} link={'/signup'} linkText={"Sign up"} />
+          <Login email={email} password={password} handleLogin={handleLogin} />
+        </Route>
 
-          <ProtectedRoute exact path='/'
-            isLoggedIn={isLoggedIn}
-            email={email}
-            cards={cards}
-            component={Main}
-            toggleToolTip={toggleToolTip}
-            handleSignOut={handleSignOut}
-            handleEditAvatarBtn={handleEditAvatarBtn}
-            handleEditProfileBtn={handleEditProfileBtn}
-            handleAddCardBtn={handleAddCardBtn}
-            handleCardLike={(card) => handleCardLike(card)}
-            handleCardDelete={(card) => handleCardDelete(card)}
-            handleCardClick={(card) => handleCardClick(card)}
-            onCardClick={(card) => handleCardClick(card)}
-            onDeleteClick={(card) => handleCardDelete(card)}
-            onLickeClick={(card) => handleCardLike(card)}
-          />
-        </Switch>
-      </BrowserRouter>
+        <ProtectedRoute exact path='/'
+          isLoggedIn={isLoggedIn}
+          email={email}
+          cards={cards}
+          component={Main}
+          toggleToolTip={toggleToolTip}
+          handleSignOut={handleSignOut}
+          handleEditAvatarBtn={handleEditAvatarBtn}
+          handleEditProfileBtn={handleEditProfileBtn}
+          handleAddCardBtn={handleAddCardBtn}
+          handleCardLike={(card) => handleCardLike(card)}
+          handleCardDelete={(card) => handleCardDelete(card)}
+          handleCardClick={(card) => handleCardClick(card)}
+          onCardClick={(card) => handleCardClick(card)}
+          onDeleteClick={(card) => handleCardDelete(card)}
+          onLickeClick={(card) => handleCardLike(card)}
+        />
+      </Switch>
 
       <Footer />
 
