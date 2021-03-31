@@ -9,9 +9,7 @@ function Register(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(email, password);
 
-    console.log("username" + email, "password" + password);
     props.handleRegister(email, password);
     if(localStorage.getItem('jwt')) {
       history.push('/');

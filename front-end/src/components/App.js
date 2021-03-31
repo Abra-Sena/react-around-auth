@@ -42,16 +42,18 @@ function App() {
   function handleRegister(email, password) {
     auth.register(email, password)
       .then((res) => {
-        if(res.err || !res) {
+        if(res.data) {
+          setIsSuccess(true);
+          // set state for result popup here
+          toggleToolTip();
+          history.push('/');
+        }
+        else {
           setIsSuccess(false);
           // set state for result popup here
-          setInfoTooltip(true);
+          toggleToolTip();
+          return;
         }
-
-        setIsSuccess(true);
-        // set state for result popup here
-        setInfoTooltip(true);
-        history.push('/');
       })
       .catch(err => console.log(err));
   }
@@ -201,19 +203,14 @@ function App() {
 
   //collect user's informations
   React.useEffect(() => {
-    api.getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
+    api.getAppInfo()
+      .then(([userInfo, initialCards]) =>{
+        setCurrentUser(userInfo);
+        setCards(
+          initialCards.map(transformCard)
+        );
       })
       .catch(err => console.log(err));
-
-    api.getInitialCards()
-    .then((initialCards) => {
-      setCards(
-        initialCards.map(transformCard)
-      )
-    })
-    .catch(err => console.log(err));
   }, [])
 
 
